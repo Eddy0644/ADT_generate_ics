@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const moment = require("moment");
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const app = express();
 // app.use(express.json());
 app.use(bodyParser.json());
@@ -81,7 +81,7 @@ END:VTIMEZONE`;
     {
         let extra_status;
         // Handle with singleDouble classes. ------------
-        let deltaDays = 7*(oneCourse.startWeek - 1) + parseInt(oneCourse.weekday)-1 /* -1 for ADT */ - 1;
+        let deltaDays = 7 * (oneCourse.startWeek - 1) + parseInt(oneCourse.weekday) - 1 /* -1 for ADT */ - 1;
         if (oneCourse.singleDouble === "1") {
             //single Week
             if (oneCourse.startWeek % 2 === 0) deltaDays += 7;
@@ -91,41 +91,41 @@ END:VTIMEZONE`;
         }
         const firstTimeForCourse = initial_time.add(deltaDays, "days");
         if (oneCourse.singleDouble === "0") {
-            extra_status="1";
-        }else{
-            extra_status=`2;BYDAY=${weekdayName[parseInt(oneCourse.weekday)- 1]}`;
+            extra_status = "1";
+        } else {
+            extra_status = `2;BYDAY=${weekdayName[parseInt(oneCourse.weekday) - 1]}`;
         }
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
         // -1 -2 are special constants due to ADT former code.
-        let final_stime_str=firstTimeForCourse.format("YYYYMMDD")+"T"+
-            class_timetable[(parseInt(oneCourse.startTime)-1).toString()].startTime;
-        let final_etime_str=firstTimeForCourse.format("YYYYMMDD")+"T"+
-            class_timetable[(parseInt(oneCourse.endTime)-2).toString()].endTime;
-        let delta_week_days=7*(parseInt(oneCourse.endWeek)-parseInt(oneCourse.startWeek));
-        const finalTimeForCourse=firstTimeForCourse.add(delta_week_days+1,"days");
-        const finalTimeForCourseStr=finalTimeForCourse.toISOString();
-        let teacher="教师:"+oneCourse.teacher;
-        let alarm_base=(ahead_trigger)?`BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
-TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n`:"";
-        let utc_now=new Date().toISOString();
-        let ical_base=`\nBEGIN:VEVENT
+        let final_stime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
+            class_timetable[(parseInt(oneCourse.startTime) - 1).toString()].startTime;
+        let final_etime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
+            class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime;
+        let delta_week_days = 7 * (parseInt(oneCourse.endWeek) - parseInt(oneCourse.startWeek));
+        const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
+        const finalTimeForCourseStr = finalTimeForCourse.toISOString();
+        let teacher = "教师:" + oneCourse.teacher;
+        let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
+TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : "";
+        let utc_now = new Date().toISOString();
+        let ical_base = `\nBEGIN:VEVENT
 CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.name}
 DESCRIPTION:${teacher}{serial}\nLOCATION:${oneCourse.location}
 TZID:Asia/Shanghai\nSEQUENCE:0\nUID:${uuidv4()}\nRRULE:FREQ=WEEKLY;UNTIL=${finalTimeForCourseStr};INTERVAL=${extra_status}
 DTSTART;TZID=Asia/Shanghai:${final_stime_str}\nDTEND;TZID=Asia/Shanghai:${final_etime_str}
 X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
-        ical_body+="\n"+ical_base;
-        
-        
+        ical_body += "\n" + ical_base;
+
+
     }
-    ical_body+="\nEND:VCALENDAR";
-    fs.writeFile("test.ics",ical_body,console.log);
+    ical_body += "\nEND:VCALENDAR";
+    fs.writeFile("test.ics", ical_body, console.log);
 }
 
 // function
 fs.readFile("./demo.json", (string) => {
     generate({}, {
-    // generate(JSON.parse(string.toString()), {
+        // generate(JSON.parse(string.toString()), {
         xh: "Y02114000",
         inform_time: 20,     // 0 to 1440, in minutes
     });
