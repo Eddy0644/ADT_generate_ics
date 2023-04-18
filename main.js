@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 // app.use(express.urlencoded({ extended: true }));
 app.post("/*", (req, res) => {
     console.log(req.body);
-    res.end("Hello Login");
+    res.end(JSON.stringify({msg:`成功生成了你的ics格式课程表链接；已复制到剪贴板。`,link:`http://nc32.top:35741/gen/${conf.xh}.ics`}));
 });
-
+app.use("/gen",express.static("generated"));
 app.listen(35741, () => {
     console.log("服务器启动成功");
 });
@@ -105,13 +105,14 @@ END:VTIMEZONE`;
         let delta_week_days = 7 * (parseInt(oneCourse.endWeek) - parseInt(oneCourse.startWeek));
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
         const finalTimeForCourseStr = finalTimeForCourse.toISOString();
-        let teacher = "教师:" + oneCourse.teacher;
+        let utc_now = new Date().toISOString();
+        let descriptionForCourse=`课程号:${oneCourse.courseId} | 教师:${oneCourse.teacher} | 单双周情况:${oneCourse.singleDouble==="0"?"无":(oneCourse.singleDouble==="1"?"单周":"双周")} | `+
+        `     本电子日历由安大通于${new moment().format("YYYYMMDD")}生成,敬请进入微信小程序"安大通"再次生成.`;
         let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
 TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : "";
-        let utc_now = new Date().toISOString();
         let ical_base = `\nBEGIN:VEVENT
 CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.fullName}
-DESCRIPTION:${teacher}{serial}\nLOCATION:${oneCourse.location}
+DESCRIPTION:${descriptionForCourse}\nLOCATION:${oneCourse.location}
 TZID:Asia/Shanghai\nSEQUENCE:0\nUID:${uuidv4()}\nRRULE:FREQ=WEEKLY;UNTIL=${finalTimeForCourseStr};INTERVAL=${extra_status}
 DTSTART;TZID=Asia/Shanghai:${final_stime_str}\nDTEND;TZID=Asia/Shanghai:${final_etime_str}
 X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
@@ -120,11 +121,11 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
 
     }
     ical_body += "\nEND:VCALENDAR";
-    fs.writeFile("test2.ics", ical_body, console.log);
+    fs.writeFile(`./generated/${conf.xh}.ics`, ical_body, console.log);
 }
 
 // function
-fs.readFile("./demo.json", (err,string) => {
+fs.readFile("./demozy.json", (err,string) => {
     // generate({}, {
         generate(JSON.parse(string.toString()), {
         xh: "Y02114000",

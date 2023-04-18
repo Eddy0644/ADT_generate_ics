@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="10739f54-2f82-4f47-affe-a381aa40230d" name="变更" comment="">
+    <list default="true" id="10739f54-2f82-4f47-affe-a381aa40230d" name="变更" comment="progress.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,19 +36,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.16.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.18.23&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/_Coding/Small_Projects/ADT_generate_ics&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\_App\\JetBrainsApps\\apps\\IDEA-U\\ch-0\\222.4459.24\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "javascript.nodejs.core.library.configured.version": "16.16.0",
+    "javascript.nodejs.core.library.typings.version": "16.18.23",
+    "last_opened_file_path": "F:/_Coding/Small_Projects/ADT_generate_ics/template.ics",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "D:\\_App\\JetBrainsApps\\apps\\IDEA-U\\ch-0\\222.4459.24\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external",
+    "two.files.diff.last.used.file": "F:/_Coding/Small_Projects/ADT_generate_ics/template.ics"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\_Coding\Small_Projects\ADT_generate_ics" />
@@ -68,7 +68,7 @@
       <workItem from="1681549066096" duration="1231000" />
       <workItem from="1681635684515" duration="4440000" />
       <workItem from="1681642594969" duration="834000" />
-      <workItem from="1681817777028" duration="2869000" />
+      <workItem from="1681817777028" duration="10812000" />
     </task>
     <task id="LOCAL-00001" summary="progressing">
       <created>1681529323147</created>
@@ -112,7 +112,35 @@
       <option name="project" value="LOCAL" />
       <updated>1681819212399</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="progress">
+      <created>1681820730052</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681820730052</updated>
+    </task>
+    <task id="LOCAL-00008" summary="progress.">
+      <created>1681821397449</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1681821397449</updated>
+    </task>
+    <task id="LOCAL-00009" summary="refactor only">
+      <created>1681821869162</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1681821869162</updated>
+    </task>
+    <task id="LOCAL-00010" summary="progress.&#10;(could gen correct ics file locally)">
+      <created>1681823438846</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1681823438846</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,7 +150,11 @@
     <MESSAGE value="progressing(get request successfully)" />
     <MESSAGE value="progressing" />
     <MESSAGE value="fighting with ADT time define" />
-    <option name="LAST_COMMIT_MESSAGE" value="fighting with ADT time define" />
+    <MESSAGE value="progress" />
+    <MESSAGE value="progress." />
+    <MESSAGE value="refactor only" />
+    <MESSAGE value="progress.&#10;(could gen correct ics file locally)" />
+    <option name="LAST_COMMIT_MESSAGE" value="progress.&#10;(could gen correct ics file locally)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -130,7 +162,8 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/main.js</url>
           <line>12</line>
-          <option name="timeStamp" value="1" />
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
