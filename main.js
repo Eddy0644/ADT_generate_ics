@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const moment = require("moment");
+const { v4: uuidv4 } = require('uuid');
 const app = express();
 // app.use(express.json());
 app.use(bodyParser.json());
@@ -95,9 +96,30 @@ END:VTIMEZONE`;
             extra_status=`2;BYDAY=${weekdayName[parseInt(oneCourse.weekday)- 1]}`;
         }
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
-        final_stime_str=firstTimeForCourse.format("Ymd")+"T"+
-            class_timetable[oneCourse.startTime];
+        // -1 -2 are special constants due to ADT former code.
+        let final_stime_str=firstTimeForCourse.format("Ymd")+"T"+
+            class_timetable[(parseInt(oneCourse.startTime)-1).toString()];
+        let final_etime_str=firstTimeForCourse.format("Ymd")+"T"+
+            class_timetable[(parseInt(oneCourse.endTime)-2).toString()];
+        let delta_week_days=7*(parseInt(oneCourse.endWeek)-parseInt(oneCourse.startWeek));
+        const finalTimeForCourse=firstTimeForCourse.add(delta_week_days+1,"days");
+        const finalTimeForCourseStr=finalTimeForCourse.utc();
+        let teacher=oneCourse.teacher;
+        let alarm_base=(ahead_trigger)?`BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
+TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n`:"";
+        let utc_now=new Date().toUTCString();
+        let ical_base=`\nBEGIN:VEVENT
+CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.name}
+DESCRIPTION:${teacher}{serial}\nLOCATION:${oneCourse.location}
+TZID:Asia/Shanghai\nSEQUENCE:0\nUID:${uuidv4()}\nRRULE:FREQ=WEEKLY;UNTIL=${finalTimeForCourseStr};INTERVAL=${extra_status}
+DTSTART;TZID=Asia/Shanghai:${final_stime_str}\nDTEND;TZID=Asia/Shanghai:${final_etime_str}
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
+        ical_body+="\n"+ical_base;
+        
+        
     }
+    ical_body+="\nEND:VCALENDAR";
+    fs.writeFile("test.ics",ical_body,console.log);
 }
 
 // function

@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10739f54-2f82-4f47-affe-a381aa40230d" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/ahu.timeDefine.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +68,7 @@
       <workItem from="1681549066096" duration="1231000" />
       <workItem from="1681635684515" duration="4440000" />
       <workItem from="1681642594969" duration="834000" />
-      <workItem from="1681817777028" duration="1254000" />
+      <workItem from="1681817777028" duration="2869000" />
     </task>
     <task id="LOCAL-00001" summary="progressing">
       <created>1681529323147</created>
@@ -105,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681638962652</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fighting with ADT time define">
+      <created>1681819212399</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681819212399</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,14 +121,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="progressing(get request successfully)" />
     <MESSAGE value="progressing" />
-    <option name="LAST_COMMIT_MESSAGE" value="progressing" />
+    <MESSAGE value="fighting with ADT time define" />
+    <option name="LAST_COMMIT_MESSAGE" value="fighting with ADT time define" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/main.js</url>
-          <line>11</line>
+          <line>12</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
