@@ -81,7 +81,7 @@ END:VTIMEZONE`;
     {
         let extra_status;
         // Handle with singleDouble classes. ------------
-        let deltaDays = (oneCourse.startWeek - 1) + parseInt(oneCourse.weekday) - 1;
+        let deltaDays = 7*(oneCourse.startWeek - 1) + parseInt(oneCourse.weekday)-1 /* -1 for ADT */ - 1;
         if (oneCourse.singleDouble === "1") {
             //single Week
             if (oneCourse.startWeek % 2 === 0) deltaDays += 7;
@@ -97,17 +97,17 @@ END:VTIMEZONE`;
         }
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
         // -1 -2 are special constants due to ADT former code.
-        let final_stime_str=firstTimeForCourse.format("Ymd")+"T"+
-            class_timetable[(parseInt(oneCourse.startTime)-1).toString()];
-        let final_etime_str=firstTimeForCourse.format("Ymd")+"T"+
-            class_timetable[(parseInt(oneCourse.endTime)-2).toString()];
+        let final_stime_str=firstTimeForCourse.format("YYYYMMDD")+"T"+
+            class_timetable[(parseInt(oneCourse.startTime)-1).toString()].startTime;
+        let final_etime_str=firstTimeForCourse.format("YYYYMMDD")+"T"+
+            class_timetable[(parseInt(oneCourse.endTime)-2).toString()].endTime;
         let delta_week_days=7*(parseInt(oneCourse.endWeek)-parseInt(oneCourse.startWeek));
         const finalTimeForCourse=firstTimeForCourse.add(delta_week_days+1,"days");
-        const finalTimeForCourseStr=finalTimeForCourse.utc();
-        let teacher=oneCourse.teacher;
+        const finalTimeForCourseStr=finalTimeForCourse.toISOString();
+        let teacher="教师:"+oneCourse.teacher;
         let alarm_base=(ahead_trigger)?`BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
 TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n`:"";
-        let utc_now=new Date().toUTCString();
+        let utc_now=new Date().toISOString();
         let ical_base=`\nBEGIN:VEVENT
 CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.name}
 DESCRIPTION:${teacher}{serial}\nLOCATION:${oneCourse.location}
@@ -124,7 +124,8 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
 
 // function
 fs.readFile("./demo.json", (string) => {
-    generate(JSON.parse(string.toString()), {
+    generate({}, {
+    // generate(JSON.parse(string.toString()), {
         xh: "Y02114000",
         inform_time: 20,     // 0 to 1440, in minutes
     });
