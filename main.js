@@ -95,7 +95,8 @@ END:VTIMEZONE`;
             extra_status=`2;BYDAY=${weekdayName[parseInt(oneCourse.weekday)- 1]}`;
         }
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
-
+        final_stime_str=firstTimeForCourse.format("Ymd")+"T"+
+            class_timetable[oneCourse.startTime];
     }
 }
 
