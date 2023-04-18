@@ -11,7 +11,14 @@ app.use(bodyParser.json());
 // app.use(express.urlencoded({ extended: true }));
 app.post("/*", (req, res) => {
     console.log(req.body);
-    res.end(JSON.stringify({msg:`成功生成了你的ics格式课程表链接；已复制到剪贴板。`,link:`http://nc32.top:35741/gen/${conf.xh}.ics`}));
+    if(generate(req.body,{
+        xh:req.query.xh,
+        inform_time:(req.query.inform_time)?parseInt(req.query.inform_time):0
+    })==="success"){
+        res.end(JSON.stringify({stat:1,msg:`Success`,link:`http://nc32.top:35741/gen/${req.query.xh}.ics`}));
+    }else{
+        res.end(JSON.stringify({stat:0,msg:`Error`,link:''}));
+    }
 });
 app.use("/gen",express.static("generated"));
 app.listen(35741, () => {
@@ -99,9 +106,9 @@ END:VTIMEZONE`;
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
         // -1 -2 are special constants due to ADT former code.
         let final_stime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
-            class_timetable[(parseInt(oneCourse.startTime) - 1).toString()].startTime;
+            class_timetable[(parseInt(oneCourse.startTime) - 1).toString()].startTime + "Z";
         let final_etime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
-            class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime;
+            class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime + "Z";
         let delta_week_days = 7 * (parseInt(oneCourse.endWeek) - parseInt(oneCourse.startWeek));
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
         const finalTimeForCourseStr = finalTimeForCourse.toISOString();
@@ -122,13 +129,14 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
     }
     ical_body += "\nEND:VCALENDAR";
     fs.writeFile(`./generated/${conf.xh}.ics`, ical_body, console.log);
+    return "success";
 }
 
 // function
-fs.readFile("./demozy.json", (err,string) => {
-    // generate({}, {
-        generate(JSON.parse(string.toString()), {
-        xh: "Y02114000",
-        inform_time: 20,     // 0 to 1440, in minutes
-    });
-})
+// fs.readFile("./demozy.json", (err,string) => {
+//     // generate({}, {
+//         generate(JSON.parse(string.toString()), {
+//         xh: "Y02114000",
+//         inform_time: 20,     // 0 to 1440, in minutes
+//     });
+// })
