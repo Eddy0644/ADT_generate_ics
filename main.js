@@ -15,19 +15,19 @@ app.post("/*", (req, res) => {
         xh:req.query.xh,
         inform_time:(req.query.inform_time)?parseInt(req.query.inform_time):0
     })==="success"){
-        res.end(JSON.stringify({stat:1,msg:`Success`,link:`http://nc32.top:35741/gen/${req.query.xh}.ics`}));
+        res.end(JSON.stringify({stat:1,msg:`Success`,link:`https://nc32.top/ADT/gen/${req.query.xh}.ics`}));
     }else{
         res.end(JSON.stringify({stat:0,msg:`Error`,link:''}));
     }
 });
-app.use("/gen",express.static("generated"));
+app.use("/ADT/gen",express.static("generated"));
 app.listen(35741, () => {
     console.log("服务器启动成功");
 });
 
 function generate(classInfo, conf) {
     const first_week = "20230306",
-        inform_time = conf.inform_time ? conf.inform_time : 20,
+        inform_time = conf.inform_time ? conf.inform_time : 0,
         nowDate = new Date(),
         g_name = `2022-2023年度第二学期课程表`,
         g_color = "#ff9500",
@@ -46,7 +46,7 @@ function generate(classInfo, conf) {
     } else if (inform_time <= 60) {
         ahead_trigger = `-P0DT0H${inform_time}M0S`;
     } else if (inform_time <= 1440) {
-        ahead_trigger = `-P0DT${inform_time / 60}H${inform_time % 60}M0S`;
+        ahead_trigger = `-P0DT${(inform_time / 60).toFixed(0)}H${inform_time % 60}M0S`;
     } else {
         return {s: "ERR", t: "Invalid inform_time! Please check again."};
     }
