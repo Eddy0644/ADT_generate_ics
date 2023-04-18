@@ -59,7 +59,7 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE`;
     let initial_time = moment(first_week), i = 1;
-    const oneCourse = {
+    const oneCourse1 = {
         "weekday": "8",
         "startWeek": "11",
         "endWeek": "12",
@@ -77,7 +77,8 @@ END:VTIMEZONE`;
         "fullName": "形势与政策(四)",
         "colorIndex": "1"
     };
-    // for (const oneCourse of class_info)
+
+    for (const oneCourse of class_info)
     {
         let extra_status;
         // Handle with singleDouble classes. ------------
@@ -89,7 +90,7 @@ END:VTIMEZONE`;
             //Double week
             if (oneCourse.startWeek % 2 === 1) deltaDays += 7;
         }
-        const firstTimeForCourse = initial_time.add(deltaDays, "days");
+        const firstTimeForCourse = initial_time.clone().add(deltaDays, "days");
         if (oneCourse.singleDouble === "0") {
             extra_status = "1";
         } else {
@@ -109,7 +110,7 @@ END:VTIMEZONE`;
 TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : "";
         let utc_now = new Date().toISOString();
         let ical_base = `\nBEGIN:VEVENT
-CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.name}
+CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.fullName}
 DESCRIPTION:${teacher}{serial}\nLOCATION:${oneCourse.location}
 TZID:Asia/Shanghai\nSEQUENCE:0\nUID:${uuidv4()}\nRRULE:FREQ=WEEKLY;UNTIL=${finalTimeForCourseStr};INTERVAL=${extra_status}
 DTSTART;TZID=Asia/Shanghai:${final_stime_str}\nDTEND;TZID=Asia/Shanghai:${final_etime_str}
@@ -119,13 +120,13 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
 
     }
     ical_body += "\nEND:VCALENDAR";
-    fs.writeFile("test.ics", ical_body, console.log);
+    fs.writeFile("test2.ics", ical_body, console.log);
 }
 
 // function
-fs.readFile("./demo.json", (string) => {
-    generate({}, {
-        // generate(JSON.parse(string.toString()), {
+fs.readFile("./demo.json", (err,string) => {
+    // generate({}, {
+        generate(JSON.parse(string.toString()), {
         xh: "Y02114000",
         inform_time: 20,     // 0 to 1440, in minutes
     });
