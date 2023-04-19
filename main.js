@@ -110,12 +110,15 @@ END:VTIMEZONE`;
             class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime;
         let delta_week_days = 7 * (parseInt(oneCourse.endWeek) - parseInt(oneCourse.startWeek));
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
-        const finalTimeForCourseStr = finalTimeForCourse.toISOString();
+        let finalTimeForCourseStr = finalTimeForCourse.toISOString();
+        // Xiaomi Calendar can not recognise except removing - and :
+        finalTimeForCourseStr.replaceAll(":","").replaceAll("-","");
+
         let utc_now = new Date().toISOString();
         let descriptionForCourse = `课程号:${oneCourse.courseId} | 教师:${oneCourse.teacher} | 单双周情况:${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")} | ` +
             `     本电子日历于${new moment().format("YYYYMMDD")}生成,若需变动请进入微信小程序"安大通"再次生成.`;
         let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
-TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : "";
+TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : ``;
         let ical_base = `\nBEGIN:VEVENT
 CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.fullName}
 DESCRIPTION:${descriptionForCourse}\nLOCATION:${oneCourse.location}
