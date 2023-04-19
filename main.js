@@ -115,8 +115,8 @@ END:VTIMEZONE`;
         finalTimeForCourseStr.replaceAll(":","").replaceAll("-","");
 
         let utc_now = new Date().toISOString();
-        let descriptionForCourse = `课程号:${oneCourse.courseId} | 教师:${oneCourse.teacher} | 单双周情况:${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")} | ` +
-            `     本电子日历于${new moment().format("YYYYMMDD")}生成,若需变动请进入微信小程序"安大通"再次生成.`;
+        let descriptionForCourse = `教师:${oneCourse.teacher} | 课程号:${oneCourse.courseId} | 单双周情况:[${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")}]` +
+            `  (本电子日历于${new moment().format("YYYYMMDD")}生成,若需变动请进入微信小程序"安大通"再次生成.)`;
         let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
 TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : ``;
         let ical_base = `\nBEGIN:VEVENT
@@ -124,8 +124,8 @@ CREATED:${utc_now}\nDTSTAMP:${utc_now}\nSUMMARY:${oneCourse.fullName}
 DESCRIPTION:${descriptionForCourse}\nLOCATION:${oneCourse.location}
 TZID:Asia/Shanghai\nSEQUENCE:0\nUID:${uuidv4()}\nRRULE:FREQ=WEEKLY;UNTIL=${finalTimeForCourseStr};INTERVAL=${extra_status}
 DTSTART;TZID=Asia/Shanghai:${final_stime_str}\nDTEND;TZID=Asia/Shanghai:${final_etime_str}
-X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT\n`;
-        ical_body += "\n" + ical_base;
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n${alarm_base}END:VEVENT`;
+        ical_body += "" + ical_base;
 
 
     }
