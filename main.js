@@ -11,18 +11,19 @@ app.use(bodyParser.json());
 // app.use(express.urlencoded({ extended: true }));
 app.post("/*", (req, res) => {
     console.log(req.body);
-    if(generate(req.body,{
-        xh:req.query.xh,
-        inform_time:(req.query.inform_time)?parseInt(req.query.inform_time):0
-    })==="success"){
-        res.end(JSON.stringify({stat:1,msg:`Success`,link:`https://nc32.top/ADT/gen/${req.query.xh}.ics`}));
-    }else{
-        res.end(JSON.stringify({stat:0,msg:`Error`,link:''}));
+    if (generate(req.body, {
+        xh: req.query.xh,
+        inform_time: (req.query.inform_time) ? parseInt(req.query.inform_time) : 0
+    }) === "success") {
+        res.end(JSON.stringify({stat: 1, msg: `Success`, link: `https://nc32.top/ADT/gen/${req.query.xh}.ics`}));
+    } else {
+        res.end(JSON.stringify({stat: 0, msg: `Error`, link: ''}));
     }
 });
-app.use("/ADT/gen",express.static("generated"));
-app.listen(35741, () => {
-    console.log("服务器启动成功");
+app.use("/ADT/gen", express.static("generated"));
+const conf1 = require('./config');
+app.listen(conf1.port, () => {
+    console.log(conf1.startupMsg);
 });
 
 function generate(classInfo, conf) {
@@ -85,8 +86,7 @@ END:VTIMEZONE`;
         "colorIndex": "1"
     };
 
-    for (const oneCourse of class_info)
-    {
+    for (const oneCourse of class_info) {
         let extra_status;
         // Handle with singleDouble classes. ------------
         let deltaDays = 7 * (oneCourse.startWeek - 1) + parseInt(oneCourse.weekday) - 1 /* -1 for ADT */ - 1;
@@ -106,15 +106,15 @@ END:VTIMEZONE`;
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
         // -1 -2 are special constants due to ADT former code.
         let final_stime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
-            class_timetable[(parseInt(oneCourse.startTime) - 1).toString()].startTime + "Z";
+            class_timetable[(parseInt(oneCourse.startTime) - 1).toString()].startTime;
         let final_etime_str = firstTimeForCourse.format("YYYYMMDD") + "T" +
-            class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime + "Z";
+            class_timetable[(parseInt(oneCourse.endTime) - 2).toString()].endTime;
         let delta_week_days = 7 * (parseInt(oneCourse.endWeek) - parseInt(oneCourse.startWeek));
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
         const finalTimeForCourseStr = finalTimeForCourse.toISOString();
         let utc_now = new Date().toISOString();
-        let descriptionForCourse=`课程号:${oneCourse.courseId} | 教师:${oneCourse.teacher} | 单双周情况:${oneCourse.singleDouble==="0"?"无":(oneCourse.singleDouble==="1"?"单周":"双周")} | `+
-        `     本电子日历由安大通于${new moment().format("YYYYMMDD")}生成,敬请进入微信小程序"安大通"再次生成.`;
+        let descriptionForCourse = `课程号:${oneCourse.courseId} | 教师:${oneCourse.teacher} | 单双周情况:${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")} | ` +
+            `     本电子日历于${new moment().format("YYYYMMDD")}生成,若需变动请进入微信小程序"安大通"再次生成.`;
         let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
 TRIGGER:${ahead_trigger}\nX-WR-ALARMUID:${uuidv4()}\nUID:${uuidv4()}\nEND:VALARM\n` : "";
         let ical_base = `\nBEGIN:VEVENT
