@@ -1,4 +1,4 @@
-// noinspection SpellCheckingInspection,JSUnresolvedVariable
+// noinspection SpellCheckingInspection,JSUnresolvedVariable,JSUnusedLocalSymbols
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -29,7 +29,6 @@ app.listen(conf1.port, () => {
 function generate(classInfo, conf) {
     const first_week = "20230306",
         inform_time = conf.inform_time ? conf.inform_time : 0,
-        nowDate = new Date(),
         g_name = `2022-2023年度第二学期课程表`,
         g_color = "#ff9500",
         weekdayName = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
@@ -66,8 +65,8 @@ TZNAME:CST
 DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE`;
-    let initial_time = moment(first_week), i = 1;
-    const oneCourse1 = {
+    let initial_time = moment(first_week);
+    const oneCourse1_test = {
         "weekday": "8",
         "startWeek": "11",
         "endWeek": "12",
