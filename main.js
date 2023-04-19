@@ -112,7 +112,7 @@ END:VTIMEZONE`;
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
         let finalTimeForCourseStr = finalTimeForCourse.toISOString();
         // Xiaomi Calendar can not recognise except removing - and :
-        finalTimeForCourseStr.replaceAll(":","").replaceAll("-","");
+        finalTimeForCourseStr=finalTimeForCourseStr.replaceAll(":","").replaceAll("-","").replaceAll(".000","");
 
         let utc_now = new Date().toISOString();
         let descriptionForCourse = `教师:${oneCourse.teacher} | 课程号:${oneCourse.courseId} | 单双周情况:[${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")}]` +
