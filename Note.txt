@@ -1,0 +1,2 @@
+Special Thanks to ChatGPT and https://icalendar.org/validator.html, on correcting iCal errors.
+Every term some parameters should be edited manually.
