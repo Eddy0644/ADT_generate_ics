@@ -27,9 +27,9 @@ app.listen(conf1.port, () => {
 });
 
 function generate(classInfo, conf) {
-    const first_week = "20230306",
+    const first_week = "20230828",
         inform_time = conf.inform_time ? conf.inform_time : 0,
-        g_name = `2022-2023年度第二学期课程表`,
+        g_name = `2023-2024年度第1学期课程表`,
         g_color = "#ff9500",
         weekdayName = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
     let ahead_trigger = "", ical_body = "";
@@ -52,6 +52,7 @@ function generate(classInfo, conf) {
     }
     ical_body = `BEGIN:VCALENDAR
 VERSION:2.0
+PRODID:-//AnDaTong//AnDaTong//CN
 X-WR-CALNAME:${g_name}
 X-APPLE-CALENDAR-COLOR:${g_color}
 X-WR-TIMEZONE:Asia/Shanghai
@@ -62,7 +63,7 @@ BEGIN:STANDARD
 TZOFFSETFROM:+0800
 TZOFFSETTO:+0800
 TZNAME:CST
-DTSTART:19700101T000000
+DTSTART:20220101T000000
 END:STANDARD
 END:VTIMEZONE`;
     let initial_time = moment(first_week);
