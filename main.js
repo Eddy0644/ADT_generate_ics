@@ -101,7 +101,7 @@ END:VTIMEZONE`;
         if (oneCourse.singleDouble === "0") {
             extra_status = "1";
         } else {
-            extra_status = `2;BYDAY=${weekdayName[parseInt(oneCourse.weekday) - 1]}`;
+            extra_status = `2;BYDAY=${weekdayName[parseInt(oneCourse.weekday) - 2]}`;
         }
         // 计算课程第一次开始、结束的时间，后面使用RRule重复即可，格式类似 20200225T120000
         // -1 -2 are special constants due to ADT former code.
@@ -113,9 +113,10 @@ END:VTIMEZONE`;
         const finalTimeForCourse = firstTimeForCourse.add(delta_week_days + 1, "days");
         let finalTimeForCourseStr = finalTimeForCourse.toISOString();
         // Xiaomi Calendar can not recognise except removing - and :
-        finalTimeForCourseStr=finalTimeForCourseStr.replaceAll(":","").replaceAll("-","").replaceAll(".000","");
+        finalTimeForCourseStr = finalTimeForCourseStr.replaceAll(":", "").replaceAll("-", "").replaceAll(".000", "");
 
-        let utc_now = new Date().toISOString();
+        let utc_now = new Date().toISOString().replaceAll("-", "").replaceAll(":", "");
+        utc_now = utc_now.substring(0, utc_now.length - 5) + 'Z';
         let descriptionForCourse = `教师:${oneCourse.teacher} | 课程号:${oneCourse.courseId} | 单双周情况:[${oneCourse.singleDouble === "0" ? "无" : (oneCourse.singleDouble === "1" ? "单周" : "双周")}]` +
             `  (本电子日历于${new moment().format("YYYYMMDD")}生成,若需变动请进入微信小程序"安大通"再次生成.)`;
         let alarm_base = (ahead_trigger) ? `BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder
